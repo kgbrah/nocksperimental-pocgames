@@ -14,10 +14,12 @@ bet on a win.
 
 | Path | What it is | Status |
 |---|---|---|
-| `kernels/forfeit-flip.hoon` | The game kernel — commit-only peek surface; never holds an unrevealed seed | **compiles clean** (`hoonc`, "no panic!") |
-| `verifier/forfeit-flip-verifier.mjs` | Standalone forensic verifier: recompute any round, detect tamper, demo the cheat-vs-fix | **green** |
+| `kernels/forfeit-flip.hoon` | Game 1 kernel — commit-only peek surface; never holds an unrevealed seed | **compiles clean** (`hoonc`, "no panic!") |
+| `kernels/forfeit-dice.hoon` | Game 2 kernel — even-money over/under on a rejection-sampled `0..9999` roll | compile-gated |
+| `verifier/forfeit-flip-verifier.mjs` | Game 1 forensic verifier: recompute any round, detect tamper, demo the cheat-vs-fix | **green** |
+| `verifier/forfeit-dice-verifier.mjs` | Game 2 verifier: recompute rolls + **chi-square uniform-distribution proof** (+ bias negative-control) | **green** |
 | `verifier/fairness-receipt.mjs` | Ed25519-signed receipts + append-only evidence chain + fail-closed pre-reveal redaction | **green** |
-| `docs/FAIRNESS-DOSSIER.md` | The publishable proof: fairness construction, exploit catalog, per-step lab gates, honest residuals | — |
+| `docs/FAIRNESS-DOSSIER.md`, `docs/FORFEIT-DICE-DOSSIER.md` | The publishable proofs: fairness construction, exploit catalog, distribution proof, per-step lab gates, honest residuals | — |
 
 ## Run the proofs
 
@@ -65,8 +67,8 @@ loudly rather than overclaim.
 
 ## Roadmap (3 games, escalating rigor)
 
-1. **Forfeit Flip** *(this repo)* — even-money coinflip; the minimal fix + the forensic core.
-2. **Forfeit Dice** — even-money over/under; adds a provable-distribution dossier (chi-square recomputed from raw rolls).
+1. **Forfeit Flip** ✅ — even-money coinflip; the minimal fix + the forensic core.
+2. **Forfeit Dice** ✅ — even-money over/under; adds the provable-distribution proof (chi-square recomputed from raw rolls + a bias negative-control).
 3. **Forfeit Dice (bonded)** / Forfeit Channel — bigger-bond anti-abort, or an off-chain channel (the forensic-dispute showcase, honestly weaker on cross-round anti-abort).
 
 The single dependency that moves these from "provable in fixtures" to "playable on

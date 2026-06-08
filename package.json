@@ -5,10 +5,12 @@
   "type": "module",
   "description": "Provably-fair two-sided commit-reveal coinflip NockApp + a self-contained forensic proof system (Game 1 of 3).",
   "scripts": {
-    "test": "node verifier/forfeit-flip-verifier.mjs && node verifier/fairness-receipt.mjs",
-    "verify": "node verifier/forfeit-flip-verifier.mjs",
+    "test": "node verifier/forfeit-flip-verifier.mjs && node verifier/forfeit-dice-verifier.mjs && node verifier/fairness-receipt.mjs",
+    "verify:flip": "node verifier/forfeit-flip-verifier.mjs",
+    "verify:dice": "node verifier/forfeit-dice-verifier.mjs",
     "receipts": "node verifier/fairness-receipt.mjs",
-    "compile-gate": "hoonc --ephemeral kernels/forfeit-flip.hoon ../nockchain/hoon"
+    "compile-gate:flip": "hoonc --ephemeral kernels/forfeit-flip.hoon ../nockchain/hoon",
+    "compile-gate:dice": "hoonc --ephemeral kernels/forfeit-dice.hoon ../nockchain/hoon"
   },
   "license": "MIT"
 }
