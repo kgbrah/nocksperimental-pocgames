@@ -1,0 +1,14 @@
+{
+  "name": "forfeit-flip",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Provably-fair two-sided commit-reveal coinflip NockApp + a self-contained forensic proof system (Game 1 of 3).",
+  "scripts": {
+    "test": "node verifier/forfeit-flip-verifier.mjs && node verifier/fairness-receipt.mjs",
+    "verify": "node verifier/forfeit-flip-verifier.mjs",
+    "receipts": "node verifier/fairness-receipt.mjs",
+    "compile-gate": "hoonc --ephemeral kernels/forfeit-flip.hoon ../nockchain/hoon"
+  },
+  "license": "MIT"
+}
