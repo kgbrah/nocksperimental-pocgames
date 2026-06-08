@@ -62,12 +62,18 @@ function verifyPayload(payload, sigB64, spkiB64) {
 // Forfeit Flip's fairness depends on seeds staying secret until reveal. A commit-phase
 // receipt MUST NOT carry a seed. This is a hard gate at sign time (fail-closed), mirroring
 // nocksperimental's secret-field scrubber: never let a secret be signed/published early.
-const SECRET_VALUE = /^0x?[0-9a-fA-F]{40,}$/; // long hex looks like a seed
+//
+// We match by secret-NAMED key (seed/secret/preimage/private/mnemonic/passphrase), NOT by value
+// shape: a public commitment (commitHouse/commitClient) is a long hex string indistinguishable by
+// shape from a seed, so a value-shape rule both false-positives on commitments and false-negatives
+// on differently-shaped secrets. Naming is the reliable signal (same conclusion reached in the
+// nocksperimental peek-reveals-no-secret invariant).
+const SECRET_KEY = /seed|secret|preimage|private|mnemonic|passphrase/i;
 export function assertNoUnrevealedSecret(body) {
   const phase = body.phase;
   if (phase === "reveal" || phase === "resolved") return; // seeds are public post-reveal
   const walk = (v, keyPath) => {
-    if (typeof v === "string" && (/(seed|secret|preimage)/i.test(keyPath) || SECRET_VALUE.test(v))) {
+    if (typeof v === "string" && SECRET_KEY.test(keyPath)) {
       throw new Error(`fail-closed: pre-reveal receipt would leak a secret at "${keyPath}"`);
     }
     if (v && typeof v === "object") for (const [k, val] of Object.entries(v)) walk(val, `${keyPath}.${k}`);

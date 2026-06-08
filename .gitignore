@@ -3,3 +3,7 @@ node_modules/
 .data*/
 checkpoints/
 *.chkjam
+
+# fakenet settlement run artifacts (regenerated)
+settlement/out/
+txs/
